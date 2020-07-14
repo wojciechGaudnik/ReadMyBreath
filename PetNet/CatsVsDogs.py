@@ -25,7 +25,6 @@ class DogsVSCats():
 		self.depth = 1
 		self.path_main = os.getcwd()
 		self.print_u("Init")
-		self.test_X, self.test_y, self.train_X, self.train_y = self.split_training_data()
 		self.device = torch.device(device)
 		self.print_u("Init Net")
 		self.net_cat_vs_dogs = NetCatVsDogs().to(device)
@@ -79,6 +78,7 @@ class DogsVSCats():
 	
 	def train(self):
 		self.print_u(f'Train on {"GPU" if torch.cuda.is_available() else "CPU"}')
+		self.test_X, self.test_y, self.train_X, self.train_y = self.split_training_data()
 		for epoch in range(self.EPOCHS):
 			print(f'Epoch: {epoch}        ')
 			for i in tqdm(range(0, len(self.train_X), self.BATCH_SIZE)):
