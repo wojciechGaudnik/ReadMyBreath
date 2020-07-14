@@ -1,6 +1,4 @@
 import os
-import sys
-
 import cv2
 import numpy as np
 import torch
@@ -9,7 +7,7 @@ import torch.optim as optim
 from torch import nn
 from tqdm import tqdm
 
-from NetCatVsDogs import NetCatVsDogs
+from PetNet.NetCatVsDogs import NetCatVsDogs
 
 
 class DogsVSCats():
@@ -25,6 +23,7 @@ class DogsVSCats():
 	
 	def __init__(self, device="cpu"):
 		self.depth = 1
+		self.path_main = os.getcwd()
 		self.print_u("Init")
 		self.test_X, self.test_y, self.train_X, self.train_y = self.split_training_data()
 		self.device = torch.device(device)
@@ -49,18 +48,18 @@ class DogsVSCats():
 						self._cat_count += 1
 					elif label == self.DOGS:
 						self._dog_count += 1
-				except Exception as e:
-					print(str(e))
+				except Exception:
+					pass
 		
 		np.random.shuffle(self.training_data)
-		np.save("PetTrainingData/training_data.npy", self.training_data)
-		print(f'Cats:\t {self._cat_count}')
+		np.save(f'{self.path_main}/PetTrainingData/training_data.npy', self.training_data)
+		print(f'Cats:\t{self._cat_count}')
 		print(f'Dogs:\t{self._dog_count}')
 		self.print_u("Make data DONE")
 	
 	def split_training_data(self):
 		self.print_u("Split training data")
-		training_data = np.load("PetTrainingData/training_data.npy", allow_pickle=True)
+		training_data = np.load(f'{self.path_main}/PetTrainingData/training_data.npy', allow_pickle=True)
 		plt.imshow(training_data[1][0], cmap="gray")
 		plt.show()
 		X = torch.Tensor([i[0] for i in training_data]).view(-1, 50, 50)
