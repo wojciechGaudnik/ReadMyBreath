@@ -20,8 +20,8 @@ class DogsVSCats():
 	training_data = []
 	_cat_count = 0
 	_dog_count = 0
-	BATCH_SIZE = 100
-	EPOCHS = 50
+	BATCH_SIZE = 200
+	EPOCHS = 100
 	LR = 0.001
 	
 	def __init__(self, device="cpu"):
@@ -79,6 +79,7 @@ class DogsVSCats():
 	def train(self):
 		with open("model.log", "a") as f:
 			for epoch in range(self.EPOCHS):
+				print(f'EPOCH: {epoch}]')
 				for i in tqdm(range(0, len(self.test_X), self.BATCH_SIZE)):
 					batch_X = self.train_X[i:i + self.BATCH_SIZE].view(-1, 1, 50, 50).to(self.device)
 					batch_y = self.train_y[i:i + self.BATCH_SIZE].to(self.device)
